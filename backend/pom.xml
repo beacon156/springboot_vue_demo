@@ -89,6 +89,7 @@
 		</resources>
 		
         <plugins>
+			<!-- 拷贝前端打包后的代码到后端resources/static下 -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
