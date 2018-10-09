@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.</groupId>
+	<artifactId></artifactId>
+	<version>V01.00</version>
+	<packaging>jar</packaging>
+  
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.axet</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>0.0.9</version>
+        </dependency>
+		<dependency>
+		    <groupId>commons-lang</groupId>
+		    <artifactId>commons-lang</artifactId>
+		    <version>2.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.4</version>
+		</dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.1.28</version>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <finalName>/${project.artifactId}-${project.version}/${project.artifactId}</finalName>
+    	<sourceDirectory>src/main/java</sourceDirectory>
+    
+    	<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		
+        <plugins>
+        	<!-- 指定可运行jar的主函数类 -->
+			<!-- 打包jar文件时，配置MANIFEST.MF文件，指定可运行jar的主函数类 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+			        <archive>
+			          <manifest>
+			            <mainClass>com.cddt.Application</mainClass> 
+			            <addClasspath>true</addClasspath>
+			            <classpathPrefix>lib/</classpathPrefix>
+			          </manifest>
+			          <manifestEntries>
+			            <Class-Path>./</Class-Path>
+			          </manifestEntries>
+			        </archive>
+			        <excludes>
+			          <exclude>json/**</exclude>
+			          <exclude>static/**</exclude>
+			          <exclude>*.yml</exclude>
+			          <exclude>*.txt</exclude>
+			          <exclude>*.vbs</exclude>
+			          <exclude>*.bat</exclude>
+			        </excludes>
+			    </configuration>
+			</plugin>
+
+			<!-- 拷贝依赖的jar包到lib目录 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>
+								${project.build.directory}/${project.artifactId}-${project.version}/lib
+							</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- 拷贝静态资源到根目录 -->
+			<plugin>  
+			    <groupId>org.apache.maven.plugins</groupId>  
+			    <artifactId>maven-antrun-plugin</artifactId>
+			    <executions>  
+			        <execution>
+			            <id>copy-src/main/resources</id>  
+			            <phase>package</phase>   
+			            <goals>  
+			                <goal>run</goal>  
+			            </goals> 
+			            <configuration>  
+			                <target>  
+			                    <echo message="copy src/main/resources" />
+			                    <copy todir="${project.build.directory}/${project.artifactId}-${project.version}/">  
+			                        <fileset dir="${basedir}/src/main/resources"></fileset>  
+			                    </copy>  
+			                </target>  
+			            </configuration> 
+			        </execution>  
+			    </executions>  
+			</plugin>
+
+			<!-- 跳过单元测试用例的执行 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+			
+        </plugins>
+    </build>
+</project>

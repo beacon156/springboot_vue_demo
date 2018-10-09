@@ -1,0 +1,26 @@
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 9009
+  servlet:
+    context-path: /Uni-EMS-LCT-Server
+#  connection-timeout: 5000
+spring:
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+#配置日志
+logging:
+  #格式化输出  时间和内容
+  pattern:
+    console: "%d - %msg%n"
+  #采用相对路径方式将日志文件输出到【log\Uni-EMS-LCT.log】
+  file: log\Uni-EMS-LCT.log
+  #配置日志文件输出级别
+  level:
+    root: info
+
